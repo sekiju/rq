@@ -7,10 +7,6 @@ func Get(url string, opts ...OptsFn) (*Response, error) {
 		fn(&cfg)
 	}
 
-	if cfg.RateLimiter != nil {
-		cfg.RateLimiter.Wait()
-	}
-
 	req, err := newRequest("GET", url, nil, cfg)
 	if err != nil {
 		return nil, err
