@@ -18,6 +18,10 @@ func (postMethod) JSON(url string, opts ...OptsFn) (*Response, error) {
 		fn(&cfg)
 	}
 
+	if cfg.RateLimiter != nil {
+		cfg.RateLimiter.Wait()
+	}
+
 	serialized, err := json.Marshal(cfg.Body)
 	if err != nil {
 		return nil, err

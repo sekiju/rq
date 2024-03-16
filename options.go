@@ -1,8 +1,9 @@
 package rq
 
 type Opts struct {
-	Headers map[string]string
-	Body    interface{}
+	Headers     map[string]string
+	Body        interface{}
+	RateLimiter *RateLimiter
 }
 
 type OptsFn func(*Opts)
@@ -20,5 +21,11 @@ func SetHeader(key, value string) OptsFn {
 func SetBody(v interface{}) OptsFn {
 	return func(o *Opts) {
 		o.Body = v
+	}
+}
+
+func SetRateLimiter(rateLimiter *RateLimiter) OptsFn {
+	return func(o *Opts) {
+		o.RateLimiter = rateLimiter
 	}
 }
