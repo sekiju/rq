@@ -8,7 +8,9 @@ type Opts struct {
 type OptsFn func(*Opts)
 
 func defaultOpts() Opts {
-	return Opts{}
+	return Opts{
+		Headers: make(map[string]string),
+	}
 }
 
 func SetHeader(key, value string) OptsFn {
