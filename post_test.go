@@ -1,34 +1,47 @@
 package rq
 
 import (
+	"encoding/json"
 	"reflect"
 	"testing"
 )
 
-func TestPostMethod_JSON(t *testing.T) {
-	testData := map[string]interface{}{
-		"foo": "bar",
-		"one": 1,
-		"two": true,
-	}
+func TestPost(t *testing.T) {
+	t.Run("Basic POST Request with JSON Data", func(t *testing.T) {
+		testData := map[string]interface{}{
+			"name":     "Konstantin",
+			"age":      20,
+			"isAuthor": true,
+		}
 
-	res, err := Post.JSON("https://httpbin.org/post", SetBody(testData))
-	if err != nil {
-		t.Error(err)
-	}
+		res, err := Post.JSON("https://httpbin.org/post", SetBody(testData))
+		if err != nil {
+			t.Fatalf("Error making POST request: %v", err)
+		}
 
-	if !res.Ok {
-		t.Error("response failed, status not ok")
-	}
+		if !res.Ok {
+			t.Error("Response failed, status not ok")
+		}
 
-	var v HttpBinPostResponse
-	if err = res.JSON(&v); err != nil {
-		t.Error(err)
-	}
+		var v HttpBinPostResponse
+		if err := res.JSON(&v); err != nil {
+			t.Fatalf("Error unmarshalling response: %v", err)
+		}
 
-	if reflect.DeepEqual(v.Json, testData) {
-		t.Error("invalid response data")
-	}
+		testDataBytes, err := json.Marshal(testData)
+		if err != nil {
+			t.Fatalf("Error marshalling test data: %v", err)
+		}
+
+		expectedData := make(map[string]interface{})
+		if err := json.Unmarshal(testDataBytes, &expectedData); err != nil {
+			t.Fatalf("Error unmarshalling test data: %v", err)
+		}
+
+		if !reflect.DeepEqual(v.Json, expectedData) {
+			t.Error("Response data mismatch")
+		}
+	})
 }
 
 type HttpBinPostResponse struct {
