@@ -9,7 +9,7 @@ type OptsFn func(*Opts)
 
 func defaultOpts() Opts {
 	return Opts{
-		Headers: make(map[string]string),
+		Headers: map[string]string{},
 	}
 }
 
