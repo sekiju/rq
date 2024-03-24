@@ -13,7 +13,7 @@ func newRequest(method, url string, body io.Reader, opts Opts) (*http.Request, e
 
 	if opts.Headers != nil {
 		for key, value := range opts.Headers {
-			req.Header.Add(key, value)
+			req.Header.Set(key, value)
 		}
 	}
 
