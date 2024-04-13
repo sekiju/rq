@@ -17,5 +17,5 @@ func Get(url string, opts ...OptsFn) (*Response, error) {
 		return nil, err
 	}
 
-	return NewResponse(res), nil
+	return NewResponse(res, &cfg), nil
 }

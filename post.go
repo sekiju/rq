@@ -35,7 +35,7 @@ func (postMethod) JSON(url string, opts ...OptsFn) (*Response, error) {
 		return nil, err
 	}
 
-	return NewResponse(res), nil
+	return NewResponse(res, &cfg), nil
 }
 
 // Bytes send []byte.
@@ -60,5 +60,5 @@ func (postMethod) Bytes(url string, opts ...OptsFn) (*Response, error) {
 		return nil, err
 	}
 
-	return NewResponse(res), nil
+	return NewResponse(res, &cfg), nil
 }

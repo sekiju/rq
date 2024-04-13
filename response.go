@@ -10,10 +10,11 @@ import (
 type Response struct {
 	RawResponse *http.Response
 	Ok          bool
+	RequestOpts *Opts
 }
 
-func NewResponse(rawResponse *http.Response) *Response {
-	newResponse := &Response{RawResponse: rawResponse}
+func NewResponse(rawResponse *http.Response, opts *Opts) *Response {
+	newResponse := &Response{RawResponse: rawResponse, RequestOpts: opts}
 
 	if rawResponse.StatusCode >= 200 && rawResponse.StatusCode < 300 {
 		newResponse.Ok = true
