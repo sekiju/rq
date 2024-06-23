@@ -12,6 +12,7 @@ type Request struct {
 	opts *Opts
 }
 
+// New creates a new Request with the provided Opts.
 func New(opts ...OptsFn) *Request {
 	catOpts := defaultOpts()
 	for _, fn := range opts {
@@ -38,7 +39,7 @@ func (r *Request) Patch(URL string, args ...any) (*Response, error) {
 }
 
 func (r *Request) Delete(URL string, args ...any) (*Response, error) {
-	return r.constructor("PATCH", URL, args...)
+	return r.constructor("DELETE", URL, args...)
 }
 
 func (r *Request) constructor(method, URL string, args ...any) (*Response, error) {
