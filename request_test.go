@@ -7,10 +7,8 @@ import (
 )
 
 func TestRequest(t *testing.T) {
-	url := "https://httpbin.org/get"
-
 	t.Run("GET request", func(t *testing.T) {
-		res, err := New().Get(url)
+		res, err := New().Get("https://httpbin.org/get")
 		if err != nil {
 			t.Fatalf("Error making GET request: %v", err)
 		}
@@ -24,7 +22,7 @@ func TestRequest(t *testing.T) {
 			t.Fatalf("Error unmarshalling response: %v", err)
 		}
 
-		if v.Url != url {
+		if v.Url != "https://httpbin.org/get" {
 			t.Errorf("Got unexpected URL: %s", v.Url)
 		}
 	})
@@ -55,7 +53,7 @@ func TestRequest(t *testing.T) {
 	})
 
 	t.Run("GET request with Header", func(t *testing.T) {
-		res, err := New(SetHeader("X", "y")).Get(url)
+		res, err := New(SetHeader("X", "y")).Get("https://httpbin.org/get")
 		if err != nil {
 			t.Fatalf("Error making GET request with header: %v", err)
 		}
@@ -79,13 +77,13 @@ func TestRequest(t *testing.T) {
 		}
 	})
 
-	t.Run("POST request with JSON data", func(t *testing.T) {
-		testData := map[string]interface{}{
-			"name":     "sekiju/rq",
-			"birthday": 1710018066000,
-			"is_child": true,
-		}
+	testData := map[string]interface{}{
+		"name":     "sekiju/rq",
+		"birthday": 1710018066000,
+		"is_child": true,
+	}
 
+	t.Run("POST request with JSON data", func(t *testing.T) {
 		res, err := New(SetBody(testData)).Post("https://httpbin.org/post")
 		if err != nil {
 			t.Fatalf("Error making POST request: %v", err)
@@ -112,6 +110,77 @@ func TestRequest(t *testing.T) {
 
 		if !reflect.DeepEqual(v.Json, expectedData) {
 			t.Error("Response data mismatch")
+		}
+	})
+
+	t.Run("PUT request with JSON data", func(t *testing.T) {
+		res, err := New(SetBody(testData)).Put("https://httpbin.org/put")
+		if err != nil {
+			t.Fatalf("Error making PUT request: %v", err)
+		}
+
+		if !res.Ok {
+			t.Errorf("Expected status code 200, got %d", res.RawResponse.StatusCode)
+		}
+
+		var v HttpBinPostResponse
+		if err = res.JSON(&v); err != nil {
+			t.Fatalf("Error unmarshalling response: %v", err)
+		}
+
+		testDataBytes, err := json.Marshal(testData)
+		if err != nil {
+			t.Fatalf("Error marshalling test data: %v", err)
+		}
+
+		expectedData := make(map[string]interface{})
+		if err = json.Unmarshal(testDataBytes, &expectedData); err != nil {
+			t.Fatalf("Error unmarshalling test data: %v", err)
+		}
+
+		if !reflect.DeepEqual(v.Json, expectedData) {
+			t.Error("Response data mismatch")
+		}
+	})
+
+	t.Run("PATCH request with JSON data", func(t *testing.T) {
+		res, err := New(SetBody(testData)).Patch("https://httpbin.org/patch")
+		if err != nil {
+			t.Fatalf("Error making PUT request: %v", err)
+		}
+
+		if !res.Ok {
+			t.Errorf("Expected status code 200, got %d", res.RawResponse.StatusCode)
+		}
+
+		var v HttpBinPostResponse
+		if err = res.JSON(&v); err != nil {
+			t.Fatalf("Error unmarshalling response: %v", err)
+		}
+
+		testDataBytes, err := json.Marshal(testData)
+		if err != nil {
+			t.Fatalf("Error marshalling test data: %v", err)
+		}
+
+		expectedData := make(map[string]interface{})
+		if err = json.Unmarshal(testDataBytes, &expectedData); err != nil {
+			t.Fatalf("Error unmarshalling test data: %v", err)
+		}
+
+		if !reflect.DeepEqual(v.Json, expectedData) {
+			t.Error("Response data mismatch")
+		}
+	})
+
+	t.Run("DELETE request", func(t *testing.T) {
+		res, err := New().Delete("https://httpbin.org/delete")
+		if err != nil {
+			t.Fatalf("Error making DELETE request: %v", err)
+		}
+
+		if !res.Ok {
+			t.Errorf("Expected status code 200, got %d", res.RawResponse.StatusCode)
 		}
 	})
 }

@@ -13,7 +13,7 @@ var Post = postMethod{}
 
 // JSON encodes the interface into JSON format, and adds "application/json" header.
 //
-// Deprecated: use New().Post() instead.
+// Deprecated: use rq.New().Post() instead.
 func (postMethod) JSON(url string, opts ...OptsFn) (*Response, error) {
 	cfg := defaultOpts()
 	for _, fn := range opts {
@@ -42,7 +42,7 @@ func (postMethod) JSON(url string, opts ...OptsFn) (*Response, error) {
 
 // Bytes send []byte.
 //
-// Deprecated: use New().Post() instead.
+// Deprecated: use rq.New(rq.SetBodyType(RawBodyType)).Post() instead.
 func (postMethod) Bytes(url string, opts ...OptsFn) (*Response, error) {
 	cfg := defaultOpts()
 	for _, fn := range opts {

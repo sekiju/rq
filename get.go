@@ -2,7 +2,7 @@ package rq
 
 // Get is GET method.
 //
-// Deprecated: use New().Get() instead.
+// Deprecated: use rq.New().Get() instead.
 func Get(url string, opts ...OptsFn) (*Response, error) {
 	cfg := defaultOpts()
 	for _, fn := range opts {
