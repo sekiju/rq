@@ -24,7 +24,7 @@ func TestPost(t *testing.T) {
 		}
 
 		var v HttpBinPostResponse
-		if err := res.JSON(&v); err != nil {
+		if err = res.JSON(&v); err != nil {
 			t.Fatalf("Error unmarshalling response: %v", err)
 		}
 
@@ -34,7 +34,7 @@ func TestPost(t *testing.T) {
 		}
 
 		expectedData := make(map[string]interface{})
-		if err := json.Unmarshal(testDataBytes, &expectedData); err != nil {
+		if err = json.Unmarshal(testDataBytes, &expectedData); err != nil {
 			t.Fatalf("Error unmarshalling test data: %v", err)
 		}
 

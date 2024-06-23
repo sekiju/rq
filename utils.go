@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: used only for old requests.
 func newRequest(method, url string, body io.Reader, opts Opts) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {

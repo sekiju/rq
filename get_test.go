@@ -18,7 +18,7 @@ func TestGet(t *testing.T) {
 		}
 
 		var v HttpBinGetResponse
-		if err := res.JSON(&v); err != nil {
+		if err = res.JSON(&v); err != nil {
 			t.Fatalf("Error unmarshalling response: %v", err)
 		}
 
@@ -38,7 +38,7 @@ func TestGet(t *testing.T) {
 		}
 
 		var v HttpBinGetResponse
-		if err := res.JSON(&v); err != nil {
+		if err = res.JSON(&v); err != nil {
 			t.Fatalf("Error unmarshalling response: %v", err)
 		}
 
@@ -54,8 +54,7 @@ func TestGet(t *testing.T) {
 }
 
 type HttpBinGetResponse struct {
-	Args struct {
-	} `json:"args"`
+	Args    map[string]string `json:"args"`
 	Headers map[string]string `json:"headers"`
 	Origin  string            `json:"origin"`
 	Url     string            `json:"url"`

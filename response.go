@@ -23,7 +23,7 @@ func NewResponse(rawResponse *http.Response, opts *Opts) *Response {
 	return newResponse
 }
 
-func (r Response) JSON(v interface{}) error {
+func (r *Response) JSON(v interface{}) error {
 	body, err := io.ReadAll(r.RawResponse.Body)
 	if err != nil {
 		return err
@@ -32,7 +32,7 @@ func (r Response) JSON(v interface{}) error {
 	return json.Unmarshal(body, &v)
 }
 
-func (r Response) Text() (string, error) {
+func (r *Response) Text() (string, error) {
 	body, err := io.ReadAll(r.RawResponse.Body)
 	if err != nil {
 		return "", err
@@ -41,11 +41,11 @@ func (r Response) Text() (string, error) {
 	return string(body), nil
 }
 
-func (r Response) Bytes() ([]byte, error) {
+func (r *Response) Bytes() ([]byte, error) {
 	return io.ReadAll(r.RawResponse.Body)
 }
 
-func (r Response) UnmarshallAuto(v interface{}) error {
+func (r *Response) UnmarshallAuto(v interface{}) error {
 	if r.RawResponse == nil {
 		return errors.New("no body")
 	}
