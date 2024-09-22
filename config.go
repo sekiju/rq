@@ -36,6 +36,12 @@ func SetHeader(key, value string) Opt {
 	}
 }
 
+func SetHeaders(headers map[string]string) Opt {
+	return func(c *Config) {
+		c.Headers = headers
+	}
+}
+
 func SetBody(v interface{}) Opt {
 	return func(c *Config) {
 		c.Body = v
